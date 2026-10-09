@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NetPulse — A real-time network monitoring dashboard that checks connectivity, DNS resolution, and latency." />
+  <title>NetPulse — Network Monitoring Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ───── Header ───── -->
+  <header class="header">
+    <div class="header__inner">
+      <div class="logo">
+        <span class="logo__icon">◉</span>
+        <h1 class="logo__text">Net<span class="logo__accent">Pulse</span></h1>
+      </div>
+      <p class="header__tagline">Real-time Network Monitoring Dashboard</p>
+    </div>
+  </header>
+
+  <!-- ───── Main ───── -->
+  <main class="container">
+
+    <!-- Check Card -->
+    <section class="card card--check" id="check-section">
+      <h2 class="card__title">
+        <span class="card__icon">🔍</span> Check Connectivity
+      </h2>
+      <form id="check-form" autocomplete="off">
+        <div class="input-group">
+          <input
+            type="text"
+            id="host-input"
+            class="input"
+            placeholder="Enter hostname or IP — e.g. google.com or 8.8.8.8"
+            maxlength="253"
+            required
+          />
+          <button type="submit" class="btn btn--primary" id="check-btn">
+            <span class="btn__text">Check Network</span>
+            <span class="btn__loader" id="btn-loader" hidden></span>
+          </button>
+        </div>
+        <p class="input-hint" id="input-error" hidden></p>
+      </form>
+    </section>
+
+    <!-- Result Card -->
+    <section class="card card--result" id="result-card" hidden>
+      <h2 class="card__title">
+        <span class="card__icon" id="result-icon">📡</span>
+        <span id="result-title">Result</span>
+      </h2>
+      <div class="result-grid" id="result-grid">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- History Card -->
+    <section class="card card--history" id="history-card" hidden>
+      <h2 class="card__title">
+        <span class="card__icon">📋</span> Recent Checks
+        <button class="btn btn--small btn--ghost" id="clear-history-btn">Clear</button>
+      </h2>
+      <div class="history-list" id="history-list">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- Learn Card -->
+    <section class="card card--learn">
+      <h2 class="card__title">
+        <span class="card__icon">📖</span> Networking Concepts
+      </h2>
+      <div class="concepts-grid">
+
+        <div class="concept">
+          <h3 class="concept__heading">🌐 DNS Resolution</h3>
+          <p>
+            <strong>Domain Name System (DNS)</strong> translates human-readable
+            domain names like <code>google.com</code> into machine-readable
+            IP addresses like <code>142.250.195.46</code>. Think of it as
+            the internet's phone book. Without DNS, you would have to memorize
+            numbers for every website.
+          </p>
+        </div>
+
+        <div class="concept">
+          <h3 class="concept__heading">⏱️ Latency</h3>
+          <p>
+            <strong>Latency</strong> (or <em>response time</em>) is the time
+            it takes for a data packet to travel from your computer to a
+            server and back — measured in <strong>milliseconds (ms)</strong>.
+            Lower latency means a faster, more responsive connection. Latency
+            above 200 ms is generally noticeable.
+          </p>
+        </div>
+
+        <div class="concept">
+          <h3 class="concept__heading">🔗 TCP Connectivity</h3>
+          <p>
+            <strong>TCP (Transmission Control Protocol)</strong> ensures
+            reliable, ordered delivery of data. When NetPulse checks a host,
+            it attempts a <strong>TCP handshake</strong> on port 80 (HTTP) or
+            443 (HTTPS). If the handshake completes, the host is reachable.
+            If it times out, the host is unreachable or a firewall is
+            blocking the connection.
+          </p>
+        </div>
+
+        <div class="concept">
+          <h3 class="concept__heading">🛡️ Ports</h3>
+          <p>
+            A <strong>port</strong> is a numbered endpoint on a server. Common
+            ports include <strong>80</strong> (HTTP), <strong>443</strong>
+            (HTTPS), and <strong>22</strong> (SSH). NetPulse tries port 80
+            first, then falls back to 443, mimicking how a web browser
+            connects.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Architecture Card -->
+    <section class="card card--arch">
+      <h2 class="card__title">
+        <span class="card__icon">🏗️</span> Project Architecture
+      </h2>
+      <pre class="arch-diagram">
+┌─────────────────────┐         ┌─────────────────────┐
+│     Browser (UI)    │  AJAX   │   Flask Server      │
+│  HTML + CSS + JS    │────────▸│   (app.py)          │
+│                     │◂────────│                     │
+│  • Input form       │  JSON   │  • Input validation │
+│  • Result display   │         │  • DNS resolution   │
+│  • Session history  │         │  • TCP connect test  │
+│  • Concepts section │         │  • Latency timing   │
+└─────────────────────┘         └────────┬────────────┘
+                                         │ socket
+                                         ▼
+                                ┌─────────────────────┐
+                                │   Target Host       │
+                                │   (e.g. google.com) │
+                                └─────────────────────┘
+      </pre>
+    </section>
+
+  </main>
+
+  <!-- ───── Footer ───── -->
+  <footer class="footer">
+    <p>NetPulse &copy; 2026 — B.Tech CSE Networking Project</p>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
